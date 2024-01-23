@@ -6,7 +6,7 @@ public class CryptographyBuilder {
     private String finalValue;
 
     public CryptographyBuilder(String plainText) {
-        if(plainText == null || plainText.isBlank() || plainText.isEmpty() || plainText.length() < 4) {
+        if(plainText == null || plainText.isBlank() || plainText.length() < 4) {
             throw new IllegalArgumentException("Invalid plainText");
         }
         this.finalValue = plainText;
@@ -14,14 +14,12 @@ public class CryptographyBuilder {
 
     public CryptographyBuilder shiftToRight() {
         StringBuilder newValue = new StringBuilder();
-        for (int i = 0; i < this.finalValue.length(); i++) {
-            char c = this.finalValue.charAt(i);
 
-            if(CharacterUtil.isLetter(c) == true) {
-                c += 3;
+        for (char character : this.finalValue.toCharArray()) {
+            if(CharacterUtil.isLetter(character)) {
+                character += 3;
             }
-            
-            newValue.append(c);
+            newValue.append(character);
         }
 
         this.finalValue = newValue.toString();
@@ -32,17 +30,15 @@ public class CryptographyBuilder {
         StringBuilder stringBuilder = new StringBuilder();
         int half = finalValue.length() / 2;
 
-        for (int i = 0; i < this.finalValue.length(); i++) {
-            char c = finalValue.charAt(i);
+        String noModify = this.finalValue.substring(0, half);
+        String shouldModify = this.finalValue.substring(half);
 
-            if(i >= half) {
-                c -= 1;
-            }
-            
-            stringBuilder.append(c);
+        for (char character : shouldModify.toCharArray()) {
+            character -= 1;
+            stringBuilder.append(character);
         }
 
-        this.finalValue = stringBuilder.toString();
+        this.finalValue = noModify.concat(stringBuilder.toString());
         return this;
     }
 
